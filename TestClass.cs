@@ -100,6 +100,24 @@ namespace NumbersToWordsTDDKata
             Assert.AreEqual(expected, words);
         }
 
+        [TestCase("one hundred thousand", 100000)]
+        [TestCase("one hundred ten thousand", 110000)]
+        [TestCase("one hundred eleven thousand", 111000)]
+        [TestCase("one hundred eleven thousand one hundred", 111100)]
+        [TestCase("one hundred eleven thousand one hundred ten", 111110)]
+        [TestCase("one hundred eleven thousand one hundred eleven", 111111)]
+        [TestCase("nine hundred thousand", 900000)]
+        [TestCase("nine hundred ninety thousand", 990000)]
+        [TestCase("nine hundred ninety-nine thousand", 999000)]
+        [TestCase("nine hundred ninety-nine thousand nine hundred", 999900)]
+        [TestCase("nine hundred ninety-nine thousand nine hundred ninety", 999990)]
+        [TestCase("nine hundred ninety-nine thousand nine hundred ninety-nine", 999999)]
+        public void From_100000_To_999999_Test(string expected, int number)
+        {
+            string words = new NumbersToWords().From100000To999999(number);
+            Assert.AreEqual(expected, words);
+        }
+
         public class NumbersToWords
         {
             private readonly Dictionary<int, string> words = new Dictionary<int, string>(){
@@ -159,7 +177,24 @@ namespace NumbersToWordsTDDKata
                 }
 
                 return result;
-            }           
+            }
+
+            public string From100000To999999(int number)
+            {
+                string result = string.Empty;
+                int r = number % 1000;
+
+                if (number % 1000 != 0)
+                {
+                    result += From100To999(number / 1000) + " thousand " + From100To999(r);
+                }
+                else
+                {
+                    result += From100To999(number / 1000) + " thousand";
+                }
+
+                return result;
+            }
         }
     }
 }
