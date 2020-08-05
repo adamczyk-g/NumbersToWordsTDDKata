@@ -31,7 +31,7 @@ namespace NumbersToWordsTDDKata
         [TestCase("ninteen", 19)]
         public void FromZeroToNineteen_Test(string expected, int number)
         {
-            string words = new NumbersToWords().FromZeroToNineteen(number);
+            string words = new NumbersToWords().From0To19(number);
             Assert.AreEqual(expected,words);
         }
         
@@ -58,7 +58,7 @@ namespace NumbersToWordsTDDKata
 
         public void FromTwentyToNinetyNine_Test(string expected, int number)
         {
-            string words = new NumbersToWords().FromTwentyToNinetyNine(number);
+            string words = new NumbersToWords().From20To99(number);
             Assert.AreEqual(expected, words);
         }
 
@@ -77,7 +77,7 @@ namespace NumbersToWordsTDDKata
         [TestCase("nine hundred ninety-nine", 999)]
         public void FromHundredToNineHundredNinetyNine_Test(string expected, int number)
         {
-            string words = new NumbersToWords().FromHundredToNineHundredNinetyNine(number);
+            string words = new NumbersToWords().From100To999(number);
             Assert.AreEqual(expected, words);
         }
         
@@ -110,12 +110,12 @@ namespace NumbersToWordsTDDKata
 
             public NumbersToWords() { }
 
-            public string FromZeroToNineteen(int number)
+            public string From0To19(int number)
             {
                 return words[number];
             }
 
-            public string FromTwentyToNinetyNine(int number)
+            public string From20To99(int number)
             {
                 string result = words[number - number % 10];
 
@@ -127,7 +127,7 @@ namespace NumbersToWordsTDDKata
                 return result;
             }
 
-            public string FromHundredToNineHundredNinetyNine(int number)
+            public string From100To999(int number)
             {
                 int r = number % 100;
                 string result = string.Empty;
@@ -135,9 +135,9 @@ namespace NumbersToWordsTDDKata
                 if (number % 100 != 0)
                 {
                     if (r <= 19)
-                        result += words[number / 100] + " hundred " + FromZeroToNineteen(r);
+                        result += words[number / 100] + " hundred " + From0To19(r);
                     else
-                        result += words[number / 100] + " hundred " + FromTwentyToNinetyNine(r);
+                        result += words[number / 100] + " hundred " + From20To99(r);
                 }
                 else
                 {
@@ -147,14 +147,14 @@ namespace NumbersToWordsTDDKata
                 return result;
             }
 
-            public string FromOneThousandToNineThousandNineHundredNinetyNine(int number)
+            public string From1000To9999(int number)
             {
                 string result = string.Empty;
                 int r = number % 1000;
 
                 if (number % 1000 != 0)
                 {
-                    result += words[number / 1000] + " thousand " + FromHundredToNineHundredNinetyNine(r);
+                    result += words[number / 1000] + " thousand " + From100To999(r);
                 }
                 else
                 {
