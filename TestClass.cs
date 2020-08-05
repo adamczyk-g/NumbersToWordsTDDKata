@@ -75,12 +75,28 @@ namespace NumbersToWordsTDDKata
         [TestCase("one hundred twenty-one", 121)]
         [TestCase("one hundred eleven", 111)]
         [TestCase("nine hundred ninety-nine", 999)]
-
         public void FromHundredToNineHundredNinetyNine_Test(string expected, int number)
         {
             string words = new NumbersToWords().FromHundredToNineHundredNinetyNine(number);
             Assert.AreEqual(expected, words);
         }
+        
+        [TestCase("one thousand", 1000)]
+        [TestCase("two thousand", 2000)]
+        [TestCase("three thousand", 3000)]
+        [TestCase("four thousand", 4000)]
+        [TestCase("five thousand", 5000)]
+        [TestCase("one thousand one hundred", 1100)]
+        [TestCase("one thousand one hundred ten", 1110)]
+        [TestCase("one thousand one hundred eleven", 1111)]
+        [TestCase("nine thousand nine hundred ninety-nine", 9999)]
+
+        public void FromOneThousandToNineThousandNineHundredNinetyNine_Test(string expected, int number)
+        {
+            string words = new NumbersToWords().FromOneThousandToNineThousandNineHundredNinetyNine(number);
+            Assert.AreEqual(expected, words);
+        }
+
 
         public class NumbersToWords
         {
@@ -89,9 +105,9 @@ namespace NumbersToWordsTDDKata
                 { 9, "nine"}, {10, "ten"}, { 11, "eleven"}, {12, "twelve"}, {13, "thirteen"}, {14, "fourteen"}, {15, "fifteen"},
                 { 16, "sixteen"}, {17, "seventeen"}, {18, "eighteen"}, {19, "ninteen" }, {20, "twenty"}, {30, "thirty"},
                 { 40, "fourty"}, {50, "fifty"}, {60, "sixty"}, {70, "seventy"}, {80, "eighty"}, {90, "ninety" },
-                
+
             };
-            
+
             public NumbersToWords() { }
 
             public string FromZeroToNineteen(int number)
@@ -114,11 +130,11 @@ namespace NumbersToWordsTDDKata
             public string FromHundredToNineHundredNinetyNine(int number)
             {
                 int r = number % 100;
-                string result =string.Empty;
+                string result = string.Empty;
 
                 if (number % 100 != 0)
                 {
-                    if (r <=19)
+                    if (r <= 19)
                         result += words[number / 100] + " hundred " + FromZeroToNineteen(r);
                     else
                         result += words[number / 100] + " hundred " + FromTwentyToNinetyNine(r);
@@ -127,7 +143,24 @@ namespace NumbersToWordsTDDKata
                 {
                     result += words[number / 100] + " hundred";
                 }
-                
+
+                return result;
+            }
+
+            public string FromOneThousandToNineThousandNineHundredNinetyNine(int number)
+            {
+                string result = string.Empty;
+                int r = number % 1000;
+
+                if (number % 1000 != 0)
+                {
+                    result += words[number / 1000] + " thousand " + FromHundredToNineHundredNinetyNine(r);
+                }
+                else
+                {
+                    result += words[number / 1000] + " thousand";
+                }
+
                 return result;
             }
 
