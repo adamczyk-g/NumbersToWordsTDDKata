@@ -29,7 +29,7 @@ namespace NumbersToWordsTDDKata
         [TestCase("seventeen", 17)]
         [TestCase("eighteen", 18)]
         [TestCase("ninteen", 19)]
-        public void FromZeroToNineteen_Test(string expected, int number)
+        public void From_0_To_19_Test(string expected, int number)
         {
             string words = new NumbersToWords().From0To19(number);
             Assert.AreEqual(expected,words);
@@ -56,7 +56,7 @@ namespace NumbersToWordsTDDKata
 
         [TestCase("ninety-nine", 99)]
 
-        public void FromTwentyToNinetyNine_Test(string expected, int number)
+        public void From_20_To_99_Test(string expected, int number)
         {
             string words = new NumbersToWords().From20To99(number);
             Assert.AreEqual(expected, words);
@@ -75,7 +75,7 @@ namespace NumbersToWordsTDDKata
         [TestCase("one hundred twenty-one", 121)]
         [TestCase("one hundred eleven", 111)]
         [TestCase("nine hundred ninety-nine", 999)]
-        public void FromHundredToNineHundredNinetyNine_Test(string expected, int number)
+        public void From_100_To_999_Test(string expected, int number)
         {
             string words = new NumbersToWords().From100To999(number);
             Assert.AreEqual(expected, words);
@@ -90,13 +90,11 @@ namespace NumbersToWordsTDDKata
         [TestCase("one thousand one hundred ten", 1110)]
         [TestCase("one thousand one hundred eleven", 1111)]
         [TestCase("nine thousand nine hundred ninety-nine", 9999)]
-
-        public void FromOneThousandToNineThousandNineHundredNinetyNine_Test(string expected, int number)
+        public void From_1000_To_9999_Test(string expected, int number)
         {
-            string words = new NumbersToWords().FromOneThousandToNineThousandNineHundredNinetyNine(number);
+            string words = new NumbersToWords().From1000To9999(number);
             Assert.AreEqual(expected, words);
         }
-
 
         public class NumbersToWords
         {
@@ -105,7 +103,6 @@ namespace NumbersToWordsTDDKata
                 { 9, "nine"}, {10, "ten"}, { 11, "eleven"}, {12, "twelve"}, {13, "thirteen"}, {14, "fourteen"}, {15, "fifteen"},
                 { 16, "sixteen"}, {17, "seventeen"}, {18, "eighteen"}, {19, "ninteen" }, {20, "twenty"}, {30, "thirty"},
                 { 40, "fourty"}, {50, "fifty"}, {60, "sixty"}, {70, "seventy"}, {80, "eighty"}, {90, "ninety" },
-
             };
 
             public NumbersToWords() { }
@@ -163,7 +160,6 @@ namespace NumbersToWordsTDDKata
 
                 return result;
             }
-
         }
     }
 }
