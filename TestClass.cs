@@ -7,14 +7,12 @@ using NUnit.Framework;
 namespace NumbersToWordsTDDKata
 {
     [TestFixture]
-    public class TestClass
+    public class NumbersToWordsTests
     {
         [Test]
-        public void TestMethod()
+        public void Convert_Test()
         {
             // TODO: Add your test code here
-            var answer = 42;
-            Assert.That(answer, Is.EqualTo(42), "Some useful error message");
         }
     }
 }
