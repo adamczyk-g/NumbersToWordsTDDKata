@@ -53,7 +53,6 @@ namespace NumbersToWordsTDDKata
         [TestCase("twenty-eight", 28)]
         [TestCase("twenty-nine", 29)]
         [TestCase("ninety-nine", 99)]
-
         public void From_0_To_99_Test(string expected, int number)
         {
             string words = new NumbersToWords().From0To99(number);
@@ -118,82 +117,110 @@ namespace NumbersToWordsTDDKata
             Assert.AreEqual(expected, words);
         }
 
+        [TestCase(123, 1234123)]
+        public void LastThreeDigit_Test(int expected, int number)
+        {
+            int result = number % 1000;
+            Assert.AreEqual(expected, result);
+        }
+
         public class NumbersToWords
         {
-            private readonly Dictionary<int, string> words = new Dictionary<int, string>(){
+            private readonly Dictionary<int, string> NameOfNumber = new Dictionary<int, string>(){
                 { 0, "zero"}, {1, "one"}, {2, "two"}, {3, "three"}, {4, "four"}, {5, "five"}, {6, "six"}, {7, "seven"}, {8, "eight" },
                 { 9, "nine"}, {10, "ten"}, { 11, "eleven"}, {12, "twelve"}, {13, "thirteen"}, {14, "fourteen"}, {15, "fifteen"},
                 { 16, "sixteen"}, {17, "seventeen"}, {18, "eighteen"}, {19, "ninteen" }, {20, "twenty"}, {30, "thirty"},
-                { 40, "fourty"}, {50, "fifty"}, {60, "sixty"}, {70, "seventy"}, {80, "eighty"}, {90, "ninety" },
+                { 40, "fourty"}, {50, "fifty"}, {60, "sixty"}, {70, "seventy"}, {80, "eighty"}, {90, "ninety" }, {100, "hundred" }
             };
 
             public NumbersToWords() { }
 
-
             public string From0To99(int number)
             {
                 if (number >= 0 && number <= 19)
-                    return words[number];
+                    return NameOfNumber[number];
 
-                string result = words[number - number % 10];
+                string result = NameOfNumber[RoundNumberToNearestTen(number)];
 
-                if (number % 10 != 0)
-                {
-                    result += "-" + words[number % 10];
-                }
+                if (IsNotMultipleOfTen(number))       
+                    result += "-" + NameOfNumber[GetLastDigit(number)];
 
                 return result;
             }
 
             public string From100To999(int number)
-            {
-                int r = number % 100;
-                string result = string.Empty;
+            {                
+                string result = NameOfNumber[GetNumberOfHundreds(number)] + " " + NameOfNumber[100];                
 
-                if (number % 100 != 0)
-                {
-                        result += words[number / 100] + " hundred " + From0To99(r);
-                }
-                else
-                {
-                    result += words[number / 100] + " hundred";
-                }
+                if (IsNotMultipleOfHundred(number))            
+                    result += " " + From0To99(GetLastTwoDigit(number));                
 
                 return result;
             }
 
             public string From1000To99999(int number)
             {
-                string result = string.Empty;
-                int r = number % 1000;
+                string result = From0To99(GetNumberOfThousands(number)) + " " + "thousand";
 
-                if (number % 1000 != 0)
-                {
-                    result += From0To99(number / 1000) + " thousand " + From100To999(r);
-                }
-                else
-                {
-                    result += From0To99(number / 1000) + " thousand";
-                }
-
+                if (IsNotMultipleOfThousand(number))                
+                    result += " " + From100To999(GetLastThreeDigit(number));
+                
                 return result;
             }
 
             public string From100000To999999(int number)
             {
-                string result = string.Empty;
-                int r = number % 1000;
+                string result = From100To999(GetNumberOfThousands(number)) + " " + "thousand";
 
-                if (number % 1000 != 0)
-                {
-                    result += From100To999(number / 1000) + " thousand " + From100To999(r);
-                }
-                else
-                {
-                    result += From100To999(number / 1000) + " thousand";
-                }
+                if (IsNotMultipleOfThousand(number))                
+                    result += " " + From100To999(GetLastThreeDigit(number));
 
                 return result;
+            }
+
+            private int GetNumberOfHundreds(int number)
+            {
+                return number/100;
+            }
+
+            private int GetLastThreeDigit(int number)
+            {
+                return number % 1000;
+            }
+
+            private int GetLastTwoDigit(int number)
+            {
+                return number % 100;
+            }
+
+            private int GetLastDigit(int number)
+            {
+                return number % 10;
+            }
+
+            private int RoundNumberToNearestTen(int number)
+            {
+                return number - GetLastDigit(number);
+            }
+
+            private int GetNumberOfThousands(int number)
+            {
+                return number / 1000;
+            }
+
+            private bool IsNotMultipleOfTen(int number)
+            {
+                return GetLastDigit(number) != 0;
+            }
+
+            private bool IsNotMultipleOfHundred(int number)
+            {
+                return GetLastTwoDigit(number) != 0;
+            }
+
+            private bool IsNotMultipleOfThousand(int number)
+            {
+                return GetLastThreeDigit(number) != 0;
             }
         }
     }
