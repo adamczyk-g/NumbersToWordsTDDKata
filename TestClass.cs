@@ -55,7 +55,7 @@ namespace NumbersToWordsTDDKata
         [TestCase("ninety-nine", 99)]
         public void From_0_To_99_Test(string expected, int number)
         {
-            string words = new NumbersToWords().From0To99(number);
+            string words = new NumbersToWords().From0To999(number);
             Assert.AreEqual(expected, words);
         }
 
@@ -73,7 +73,7 @@ namespace NumbersToWordsTDDKata
         [TestCase("nine hundred ninety-nine", 999)]
         public void From_100_To_999_Test(string expected, int number)
         {
-            string words = new NumbersToWords().From100To999(number);
+            string words = new NumbersToWords().From0To999(number);
             Assert.AreEqual(expected, words);
         }
         
@@ -95,7 +95,7 @@ namespace NumbersToWordsTDDKata
         [TestCase("ninety-nine thousand nine hundred ninety-nine", 99999)]        
         public void From_1000_To_99999_Test(string expected, int number)
         {
-            string words = new NumbersToWords().From1000To99999(number);
+            string words = new NumbersToWords().From1000To999999(number);
             Assert.AreEqual(expected, words);
         }
 
@@ -113,7 +113,7 @@ namespace NumbersToWordsTDDKata
         [TestCase("nine hundred ninety-nine thousand nine hundred ninety-nine", 999999)]
         public void From_100000_To_999999_Test(string expected, int number)
         {
-            string words = new NumbersToWords().From100000To999999(number);
+            string words = new NumbersToWords().From1000To999999(number);
             Assert.AreEqual(expected, words);
         }
 
@@ -135,46 +135,40 @@ namespace NumbersToWordsTDDKata
 
             public NumbersToWords() { }
 
-            public string From0To99(int number)
+            public string From0To999(int number)
             {
+                string result = string.Empty;
+
                 if (number >= 0 && number <= 19)
-                    return NameOfNumber[number];
+                    result= NameOfNumber[number];
 
-                string result = NameOfNumber[RoundNumberToNearestTen(number)];
+                if (number >= 20 && number <= 99)
+                {
+                    result = NameOfNumber[RoundNumberToNearestTen(number)];
 
-                if (IsNotMultipleOfTen(number))       
-                    result += "-" + NameOfNumber[GetLastDigit(number)];
+                    if (IsNotMultipleOfTen(number))
+                        result += "-" + NameOfNumber[GetLastDigit(number)];
+
+                }
+
+                if (number >= 100 && number <= 999)
+                {
+                    result = NameOfNumber[GetNumberOfHundreds(number)] + " " + NameOfNumber[100];
+
+                    if (IsNotMultipleOfHundred(number))
+                        result += " " + From0To999(GetLastTwoDigit(number));                    
+                }
 
                 return result;
             }
-
-            public string From100To999(int number)
-            {                
-                string result = NameOfNumber[GetNumberOfHundreds(number)] + " " + NameOfNumber[100];                
-
-                if (IsNotMultipleOfHundred(number))            
-                    result += " " + From0To99(GetLastTwoDigit(number));                
-
-                return result;
-            }
-
-            public string From1000To99999(int number)
+           
+            public string From1000To999999(int number)
             {
-                string result = From0To99(GetNumberOfThousands(number)) + " " + "thousand";
+                string result = From0To999(GetNumberOfThousands(number)) + " " + "thousand";
 
                 if (IsNotMultipleOfThousand(number))                
-                    result += " " + From100To999(GetLastThreeDigit(number));
+                    result += " " + From0To999(GetLastThreeDigit(number));
                 
-                return result;
-            }
-
-            public string From100000To999999(int number)
-            {
-                string result = From100To999(GetNumberOfThousands(number)) + " " + "thousand";
-
-                if (IsNotMultipleOfThousand(number))                
-                    result += " " + From100To999(GetLastThreeDigit(number));
-
                 return result;
             }
 
